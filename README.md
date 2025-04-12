@@ -26,7 +26,7 @@ Done By:
 - Ussenov Bekzat  
 - Temen Arnur  
 - Srymbetov Zhalgas
-- Azamat Yeshmukhametov  
+- Yeshmukhametov Azamat 
 - Akhmetov Tolegen
 
 ## Instructions to run
