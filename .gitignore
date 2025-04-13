@@ -1,0 +1,15 @@
+[Ll]ibrary/
+[Tt]emp/
+[Bb]uild/
+[Bb]uilds/
+[Pp]rojectSettings/UnityConnectSettings.asset
+.obj/
+*.csproj
+*.sln
+*.user
+*.unityproj
+*.pidb
+*.suo
+*.apk
+*.aab
+*.log
