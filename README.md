@@ -20,7 +20,7 @@ Our VR experience consists of 3 key modules as follows:
 
 3. **Evacuation Simulation**: Respond to an active fire alarm and execute proper evacuation procedures across multiple apartment levels.
 
-![image]([https://github.com/yourusername/vr-fire-safety-training/blob/main/media/apartment_layout.png](https://github.com/Arnur0420/Virtual_Reality_Based_Fire_Training_System/blob/main/firesafety.png))
+![image]([https://github.com/Arnur0420/Virtual_Reality_Based_Fire_Training_System/blob/cd51f190b9086d2e6009304f5fc91150d099b730/firesafety.png])
 
 Done By:
 - Ussenov Bekzat  
