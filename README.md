@@ -2,7 +2,7 @@
 
 ![image](https://github.com/yourusername/vr-fire-safety-training/blob/main/media/preview.gif)
 
-Promotional Video: https://youtu.be/your-promotional-video  
+Demo Video: https://youtu.be/U5-ZQO4W6rY  
 
 ## About the Project
 
