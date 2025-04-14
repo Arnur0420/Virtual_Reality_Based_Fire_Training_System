@@ -14,13 +14,13 @@ By allowing users to safely interact with fire hazards and emergency equipment, 
 
 Our VR experience consists of 3 key modules as follows:
 
-1. **Fire Extinguisher Training**: Learn to identify and operate CO₂, powder, and water extinguishers against various fires in the apartment.
+1. **Fire Extinguisher Training**: Learn to identify and operate with extinguishers against fires in the apartment.
 
 2. **Hazard Sandbox**: Freely explore the environment, identify common fire risks, and experiment with object interactions.
 
 3. **Evacuation Simulation**: Respond to an active fire alarm and execute proper evacuation procedures across multiple apartment levels.
 
-![image](https://github.com/yourusername/vr-fire-safety-training/blob/main/media/apartment_layout.png)
+![image]([https://github.com/yourusername/vr-fire-safety-training/blob/main/media/apartment_layout.png](https://github.com/Arnur0420/Virtual_Reality_Based_Fire_Training_System/blob/main/firesafety.png))
 
 Done By:
 - Ussenov Bekzat  
