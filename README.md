@@ -2,7 +2,7 @@
 
 ![image](https://github.com/yourusername/vr-fire-safety-training/blob/main/media/preview.gif)
 
-Demo Video: https://youtu.be/U5-ZQO4W6rY
+Demo Video https://youtu.be/88x09KaLe_g
 
 ## About the Project
 
