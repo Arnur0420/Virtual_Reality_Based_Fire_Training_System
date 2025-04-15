@@ -22,12 +22,7 @@ Our VR experience consists of 3 key modules as follows:
 
 ![image]([https://github.com/Arnur0420/Virtual_Reality_Based_Fire_Training_System/blob/cd51f190b9086d2e6009304f5fc91150d099b730/firesafety.png])
 
-Done By:
-- Ussenov Bekzat  
-- Temen Arnur  
-- Srymbetov Zhalgas
-- Yeshmukhametov Azamat 
-- Akhmetov Tolegen
+Authors: Ussenov Bekzat,Temen Arnur, Srymbetov Zhalgas, Yeshmukhametov Azamat, Akhmetov Tolegen
 
 ## Instructions to run
 1. Clone Project  
