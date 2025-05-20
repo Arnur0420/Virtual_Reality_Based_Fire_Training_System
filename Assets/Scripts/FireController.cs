@@ -3,16 +3,16 @@ using UnityEngine;
 public class FireController : MonoBehaviour
 {
     [Header("Fire Settings")]
-    public float extinguishAmount = 0.01f; // Количество уменьшения размера огня за каждое столкновение с частицей
-    public float minSizeThreshold = 0.5f; // Порог размера, при котором огонь считается потушенным
+    public float extinguishAmount = 0.01f; // Количество уменьшения размера за столкновение
+    public float minSizeThreshold = 0.5f; // Порог для тушения
 
-    private float currentSize = 1f; // Текущий размер огня (от 0 до 1)
-    private bool isExtinguished = false; // Флаг, указывающий, потушен ли огонь
-    private Vector3 initialScale; // Начальный масштаб объекта огня
+    private float currentSize = 1f;
+    private bool isExtinguished = false;
+    private Vector3 initialScale;
 
     void Start()
     {
-        initialScale = transform.localScale; // Сохраняем начальный масштаб
+        initialScale = transform.localScale;
     }
 
     void OnParticleCollision(GameObject other)
@@ -25,8 +25,8 @@ public class FireController : MonoBehaviour
 
     void ReduceFire()
     {
-        currentSize -= extinguishAmount; // Уменьшаем размер на фиксированное значение
-        currentSize = Mathf.Clamp(currentSize, 0f, 1f); // Ограничиваем размер между 0 и 1
+        currentSize -= extinguishAmount;
+        currentSize = Mathf.Clamp(currentSize, 0f, 1f);
         UpdateFireSize();
 
         if (currentSize <= minSizeThreshold)
@@ -37,10 +37,7 @@ public class FireController : MonoBehaviour
 
     void UpdateFireSize()
     {
-        // Обновляем масштаб объекта огня
         transform.localScale = initialScale * currentSize;
-
-        // Если есть система частиц, корректируем её параметры
         ParticleSystem ps = GetComponent<ParticleSystem>();
         if (ps != null)
         {
@@ -52,7 +49,16 @@ public class FireController : MonoBehaviour
     void ExtinguishFire()
     {
         isExtinguished = true;
-        gameObject.SetActive(false); // Деактивируем объект огня
-        Debug.Log("Огонь потушен!");
+        gameObject.SetActive(false);
+        // Уведомляем FireCounter о тушении
+        if (FireCounter.Instance != null)
+        {
+            FireCounter.Instance.OnHotspotExtinguished();
+            Debug.Log("Огонь потушен, уведомлен FireCounter");
+        }
+        else
+        {
+            Debug.LogError("FireCounter.Instance не найден!");
+        }
     }
 }

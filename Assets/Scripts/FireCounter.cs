@@ -6,9 +6,9 @@ public class FireCounter : MonoBehaviour
     public static FireCounter Instance;
 
     [Header("Настройки цели")]
-    public int initialTarget = 5;    // стартовая цель
-    public int increaseStep = 5;     // на сколько растёт цель при новом очаге
-    public int maxBeforeEvac = 200;  // активных очагов до эвакуации
+    public int initialTarget = 5;    // Стартовая цель
+    public int increaseStep = 5;     // На сколько растёт цель при новом очаге
+    public int maxBeforeEvac = 200;  // Активных очагов до эвакуации
     public float evacTimerSec = 30f;
 
     [Header("Ссылки")]
@@ -22,29 +22,37 @@ public class FireCounter : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null && Instance != this) Destroy(gameObject);
-        else Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Сохраняем между сценами
+        }
     }
 
     void Start()
     {
         currentTarget = initialTarget;
         UpdateHUD();
+        Debug.Log($"FireCounter инициализирован. Активных пожаров: {activeFires}");
     }
 
-    /// <summary>Вызываем при спавне нового огня</summary>
     public void OnHotspotSpawned()
     {
         activeFires++;
-        currentTarget += increaseStep;  // динамическое увеличение цели
+        currentTarget += increaseStep;
+        Debug.Log($"Огонь добавлен. Активных пожаров: {activeFires}, Цель: {currentTarget}");
         UpdateHUD();
     }
 
-    /// <summary>Вызываем при полном гашении огня</summary>
     public void OnHotspotExtinguished()
     {
         extinguishedCount++;
         activeFires = Mathf.Max(0, activeFires - 1);
+        Debug.Log($"Огонь потушен. Активных пожаров: {activeFires}, Потушено: {extinguishedCount}");
         UpdateHUD();
     }
 
@@ -52,7 +60,6 @@ public class FireCounter : MonoBehaviour
     {
         if (evacStarted) return;
 
-        // Условие эвакуации по числу активных очагов
         if (activeFires > maxBeforeEvac)
         {
             evacStarted = true;
@@ -60,9 +67,7 @@ public class FireCounter : MonoBehaviour
             return;
         }
 
-        // Обычный режим: показываем прогресс тушений  и цель
-        string msg = $"🔥 Потушено: {extinguishedCount}/{currentTarget}";
-        // Цвет от оранжевого к зелёному (можешь поменять на любой)
+        string msg = $"Потушено: {extinguishedCount}/{currentTarget}";
         Color c = Color.Lerp(
             new Color(1f, 0.6f, 0f),
             Color.green,
@@ -77,14 +82,13 @@ public class FireCounter : MonoBehaviour
         while (timer > 0f)
         {
             hud.SetObjective(
-                $"🚨 Эвакуация через {Mathf.CeilToInt(timer)} сек!",
+                $"Эвакуация через {Mathf.CeilToInt(timer)} сек!",
                 Color.red,
                 true
             );
             yield return new WaitForSeconds(1f);
             timer -= 1f;
         }
-        hud.SetObjective("🏃‍♂️ Эвакуация началась!", Color.red, false);
-        // Здесь можно вызывать переход на финальную сцену
+        hud.SetObjective("Эвакуация началась!", Color.red, false);
     }
 }

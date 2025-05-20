@@ -2,38 +2,48 @@ using UnityEngine;
 
 public class FlammableObject : MonoBehaviour
 {
-    [Header("Fire Settings")]
-    public GameObject firePrefab; // Префаб огня для создания
-    public Vector3 fireOffset = new Vector3(0, 1f, 0); // Смещение позиции огня относительно объекта
+    [Header("Settings")]
+    public GameObject firePrefab; // Префаб огня
+    public Vector3 fireOffset = new Vector3(0, 1f, 0); // Смещение огня
 
-    private bool isBurning = false; // Флаг, указывающий, горит ли объект
+    private GameObject fireInstance;
+    private bool isBurning = false;
 
     public void Ignite()
     {
         if (isBurning) return;
 
         isBurning = true;
-        Debug.Log($"🔥 {gameObject.name} теперь горит!");
+        Debug.Log($"{gameObject.name} загорелся!");
 
         if (firePrefab != null)
         {
-            GameObject fireInstance = Instantiate(firePrefab, transform.position + fireOffset, Quaternion.identity, transform);
-            // Убеждаемся, что у огня есть коллайдер для столкновения с частицами
-            if (fireInstance.GetComponent<Collider>() == null)
+            fireInstance = Instantiate(firePrefab, transform.position + fireOffset, Quaternion.identity, transform);
+            BoxCollider boxCol = fireInstance.GetComponent<BoxCollider>();
+            if (boxCol == null)
             {
-                BoxCollider collider = fireInstance.AddComponent<BoxCollider>();
-                collider.isTrigger = false; // Должен быть не триггером для OnParticleCollision
+                boxCol = fireInstance.AddComponent<BoxCollider>();
+                boxCol.isTrigger = false; // Для OnParticleCollision
+            }
+            // Уведомляем FireCounter о новом пожаре
+            if (FireCounter.Instance != null)
+            {
+                FireCounter.Instance.OnHotspotSpawned();
+            }
+            else
+            {
+                Debug.LogError("FireCounter.Instance не найден!");
             }
         }
         else
         {
-            Debug.LogError("Префаб огня не назначен!");
+            Debug.LogError($"Префаб огня не назначен для {gameObject.name}!");
         }
     }
 
     void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(transform.position + fireOffset, 0.1f); // Визуализация точки появления огня
+        Gizmos.DrawSphere(transform.position + fireOffset, 0.2f);
     }
 }
