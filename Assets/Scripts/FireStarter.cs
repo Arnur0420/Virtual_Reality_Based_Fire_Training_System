@@ -10,6 +10,7 @@ public class FireStarter : MonoBehaviour
     [Header("Settings")]
     public FireSize fireSize = FireSize.Medium;
     public float startRadius = 3.0f;
+    [Tooltip("Какие слои считать воспламеняемыми")]
     public LayerMask flammableLayer;
 
     public enum FireSize { Big, Medium, Small }
@@ -20,49 +21,38 @@ public class FireStarter : MonoBehaviour
     }
 
     void StartFire()
-{
-    GameObject firePrefab = ChooseFirePrefab(fireSize);
-    if (firePrefab == null)
     {
-        Debug.LogError("❌ [FireStarter] No fire prefab assigned!");
-        return;
+        GameObject firePrefab = ChooseFirePrefab(fireSize);
+        if (firePrefab == null)
+        {
+            Debug.LogError("❌ [FireStarter] No fire prefab assigned!");
+            return;
+        }
+
+        // Указываем mask flammableLayer
+        Collider[] hitColliders = Physics.OverlapSphere(
+            transform.position, 
+            startRadius, 
+            flammableLayer, 
+            QueryTriggerInteraction.Collide
+        );
+
+        foreach (var hit in hitColliders)
+        {
+            FlammableObject flammable = hit.GetComponent<FlammableObject>();
+            if (flammable != null)
+                flammable.Ignite();
+        }
     }
-
-    Debug.Log($"🔥 [FireStarter] Fire started at {transform.position}");
-
-Collider[] hitColliders = Physics.OverlapSphere(
-    transform.position, 
-    startRadius, 
-    -1,  // All layers
-    QueryTriggerInteraction.Collide
-);
-
-
-
-    Debug.Log($"🔥 [FireStarter] Found {hitColliders.Length} potential flammables");
-
-    foreach (var hit in hitColliders)
-{
-    Debug.Log($"[FireStarter] Found collider on: {hit.gameObject.name} (Layer: {LayerMask.LayerToName(hit.gameObject.layer)})");
-    FlammableObject flammable = hit.GetComponent<FlammableObject>();
-    if (flammable != null)
-    {
-        Debug.Log($"🔥 [FireStarter] Igniting {hit.gameObject.name}");
-        flammable.Ignite();
-    }
-}
-
-}
-
 
     GameObject ChooseFirePrefab(FireSize size)
     {
         return size switch
         {
-            FireSize.Big => bigFirePrefab,
+            FireSize.Big    => bigFirePrefab,
             FireSize.Medium => mediumFirePrefab,
-            FireSize.Small => smallFirePrefab,
-            _ => mediumFirePrefab,
+            FireSize.Small  => smallFirePrefab,
+            _               => mediumFirePrefab,
         };
     }
 }

@@ -3,89 +3,56 @@ using UnityEngine;
 public class FireController : MonoBehaviour
 {
     [Header("Fire Settings")]
-    public float extinguishSpeed = 0.5f;
-    public float minIntensity = 0.1f;
+    public float extinguishAmount = 0.01f; // Количество уменьшения размера огня за каждое столкновение с частицей
+    public float minSizeThreshold = 0.5f; // Порог размера, при котором огонь считается потушенным
 
-    [Header("Fire Components")]
-    public ParticleSystem fireParticles;
-    public Light fireLight;
-    
-    // Отдельные переменные для начальных значений
-    private float initialParticleSize;
-    private float initialLightIntensity;
-    private Vector3 initialScale;
-    
-    private float currentIntensity = 1f;
-    private bool isExtinguished = false;
+    private float currentSize = 1f; // Текущий размер огня (от 0 до 1)
+    private bool isExtinguished = false; // Флаг, указывающий, потушен ли огонь
+    private Vector3 initialScale; // Начальный масштаб объекта огня
 
     void Start()
     {
-        // Сохраняем начальные значения для каждого компонента отдельно
-        if (fireParticles != null)
-        {
-            initialParticleSize = fireParticles.main.startSize.constant;
-        }
-        
-        if (fireLight != null)
-        {
-            initialLightIntensity = fireLight.intensity;
-        }
-        
-        initialScale = transform.localScale;
+        initialScale = transform.localScale; // Сохраняем начальный масштаб
     }
 
     void OnParticleCollision(GameObject other)
     {
-        if (!isExtinguished && other.CompareTag("FireExtinguisher"))
+        if (!isExtinguished)
         {
-            ReduceFireIntensity();
+            ReduceFire();
         }
     }
 
-    void ReduceFireIntensity()
+    void ReduceFire()
     {
-        currentIntensity = Mathf.Clamp(
-            currentIntensity - extinguishSpeed * Time.deltaTime, 
-            minIntensity, 
-            1f
-        );
+        currentSize -= extinguishAmount; // Уменьшаем размер на фиксированное значение
+        currentSize = Mathf.Clamp(currentSize, 0f, 1f); // Ограничиваем размер между 0 и 1
+        UpdateFireSize();
 
-        UpdateFireProperties(currentIntensity);
-
-        if (currentIntensity <= minIntensity)
+        if (currentSize <= minSizeThreshold)
         {
-            isExtinguished = true;
-            fireParticles?.Stop();
+            ExtinguishFire();
         }
     }
-// Добавьте в существующий FireController
-public void Extinguish(float amount)
-{
-    currentIntensity = Mathf.Clamp(currentIntensity - amount, minIntensity, 1f);
-    UpdateFireProperties(currentIntensity);
-    
-    if (currentIntensity <= minIntensity)
+
+    void UpdateFireSize()
+    {
+        // Обновляем масштаб объекта огня
+        transform.localScale = initialScale * currentSize;
+
+        // Если есть система частиц, корректируем её параметры
+        ParticleSystem ps = GetComponent<ParticleSystem>();
+        if (ps != null)
+        {
+            var main = ps.main;
+            main.startSize = currentSize;
+        }
+    }
+
+    void ExtinguishFire()
     {
         isExtinguished = true;
-        fireParticles?.Stop();
-    }
-}
-    void UpdateFireProperties(float intensity)
-    {
-        // Обновляем частицы
-        if (fireParticles != null)
-        {
-            var main = fireParticles.main;
-            main.startSize = initialParticleSize * intensity;
-        }
-
-        // Обновляем свет
-        if (fireLight != null)
-        {
-            fireLight.intensity = initialLightIntensity * intensity;
-        }
-
-        // Обновляем масштаб
-        transform.localScale = initialScale * intensity;
+        gameObject.SetActive(false); // Деактивируем объект огня
+        Debug.Log("Огонь потушен!");
     }
 }

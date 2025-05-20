@@ -9,6 +9,7 @@ TagManager:
   - Climbable
   - Extinguisher
   - FireExtinguisher
+  - Fire
   layers:
   - Default
   - TransparentFX
@@ -20,8 +21,8 @@ TagManager:
   - Interactable
   - Interactable Ignore Ray
   - Body
-  - 
-  - 
+  - Fire
+  - Extinguisher
   - 
   - 
   - 
