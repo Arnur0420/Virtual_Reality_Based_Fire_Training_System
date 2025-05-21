@@ -3,8 +3,8 @@ using UnityEngine;
 public class FireController : MonoBehaviour
 {
     [Header("Fire Settings")]
-    public float extinguishAmount = 0.01f; // Количество уменьшения размера за столкновение
-    public float minSizeThreshold = 0.5f; // Порог для тушения
+    public float extinguishAmount = 0.01f;
+    public float minSizeThreshold = 0.5f;
 
     private float currentSize = 1f;
     private bool isExtinguished = false;
@@ -50,7 +50,6 @@ public class FireController : MonoBehaviour
     {
         isExtinguished = true;
         gameObject.SetActive(false);
-        // Уведомляем FireCounter о тушении
         if (FireCounter.Instance != null)
         {
             FireCounter.Instance.OnHotspotExtinguished();

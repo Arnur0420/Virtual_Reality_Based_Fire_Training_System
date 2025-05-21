@@ -3,8 +3,8 @@ using UnityEngine;
 public class FlammableObject : MonoBehaviour
 {
     [Header("Settings")]
-    public GameObject firePrefab; // Префаб огня
-    public Vector3 fireOffset = new Vector3(0, 1f, 0); // Смещение огня
+    public GameObject firePrefab;
+    public Vector3 fireOffset = new Vector3(0, 1f, 0);
 
     private GameObject fireInstance;
     private bool isBurning = false;
@@ -23,9 +23,8 @@ public class FlammableObject : MonoBehaviour
             if (boxCol == null)
             {
                 boxCol = fireInstance.AddComponent<BoxCollider>();
-                boxCol.isTrigger = false; // Для OnParticleCollision
+                boxCol.isTrigger = false;
             }
-            // Уведомляем FireCounter о новом пожаре
             if (FireCounter.Instance != null)
             {
                 FireCounter.Instance.OnHotspotSpawned();

@@ -17,14 +17,14 @@ public class LiftGameOverTrigger : MonoBehaviour
         Debug.Log($"Количество активных пожаров: {fireCounter.ActiveFires}");
         if (fireCounter.ActiveFires > 0)
         {
-            Debug.Log("Вызываю ShowGameOver");
             if (gameOverOverlay == null)
             {
                 Debug.LogError("Ошибка: gameOverOverlay не назначен!");
                 return;
             }
-            gameOverOverlay.ShowGameOver("⚠️ Game Over\nНельзя пользоваться лифтом во время пожара.");
-            StartCoroutine(HideGameOverAfterDelay(10f));
+            Debug.Log("Вызываю ShowGameOver");
+            gameOverOverlay.ShowGameOver("Game Over\nНельзя пользоваться лифтом во время пожара.");
+            StartCoroutine(FadeOutGameOverAfterDelay(3f));
         }
         else
         {
@@ -32,18 +32,18 @@ public class LiftGameOverTrigger : MonoBehaviour
         }
     }
 
-    private IEnumerator HideGameOverAfterDelay(float delay)
+    private IEnumerator FadeOutGameOverAfterDelay(float delay)
     {
-        Debug.Log("Запущен таймер для скрытия Game Over");
+        Debug.Log("Запущен таймер для fade-out Game Over");
         yield return new WaitForSeconds(delay);
         if (gameOverOverlay != null)
         {
-            gameOverOverlay.HideGameOver();
-            Debug.Log("Game Over скрыт");
+            gameOverOverlay.FadeOutGameOver();
+            Debug.Log("Запущен fade-out Game Over");
         }
         else
         {
-            Debug.LogError("Ошибка: gameOverOverlay не назначен при скрытии!");
+            Debug.LogError("Ошибка: gameOverOverlay не назначен при fade-out!");
         }
     }
 }
