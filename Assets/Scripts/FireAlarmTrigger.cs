@@ -1,14 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
-public class LiftGameOverTrigger : MonoBehaviour
+public class FireAlarmTrigger : MonoBehaviour
 {
     public GameOverOverlayController gameOverOverlay;
     public FireCounter fireCounter;
 
-    public void OnLiftButtonPressed()
+    public void OnFireAlarmPressed()
     {
-        Debug.Log("Нажата кнопка лифта");
+        Debug.Log("Нажата кнопка пожарной сигнализации");
         if (fireCounter == null)
         {
             Debug.LogError("Ошибка: fireCounter не назначен!");
@@ -22,24 +22,24 @@ public class LiftGameOverTrigger : MonoBehaviour
                 Debug.LogError("Ошибка: gameOverOverlay не назначен!");
                 return;
             }
-            Debug.Log("Вызываю ShowGameOver");
-            gameOverOverlay.ShowGameOver("Запомни!\nНельзя пользоваться лифтом во время пожара.\nИспользуй лестницу для эвакуации");
+            Debug.Log("Вызываю ShowGameOver для пожарной сигнализации");
+            gameOverOverlay.ShowGameOver("Молодец!\nПожарные прибудут через 5 минут.");
             StartCoroutine(FadeOutGameOverAfterDelay(3f));
         }
         else
         {
-            Debug.Log("Нет активных пожаров, Game Over не показывается");
+            Debug.Log("Нет активных пожаров, сообщение не показывается");
         }
     }
 
     private IEnumerator FadeOutGameOverAfterDelay(float delay)
     {
-        Debug.Log("Запущен таймер для fade-out Game Over");
+        Debug.Log("Запущен таймер для fade-out сообщения");
         yield return new WaitForSeconds(delay);
         if (gameOverOverlay != null)
         {
             gameOverOverlay.FadeOutGameOver();
-            Debug.Log("Запущен fade-out Game Over");
+            Debug.Log("Запущен fade-out сообщения");
         }
         else
         {
